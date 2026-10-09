@@ -86,7 +86,7 @@ def make_pdf():
     story.append(Spacer(1, 8))
     story.append(Paragraph("<b>Westminster WildBOTS #6725</b>", styles['Normal']))
 
-    story.append(Paragraph("Fall, 2025", my_style))
+    story.append(Paragraph("Fall, 2026", my_style))
     story.append(Spacer(1, 24))
 
     story.append(Paragraph(PDFheader1, my_style))
@@ -208,7 +208,7 @@ def make_pdf():
     story.append(PageBreak())
     #=======ADD THING HERE ========#
     story.append(Spacer(1,8))
-    story.append(Paragraph("Fall, 2025", my_style))
+    story.append(Paragraph("Fall, 2026", my_style))
     story.append(Spacer(1,8))
     story.append(Spacer(1,8))
     story.append(Paragraph(PDFheader2, my_style))
