@@ -94,7 +94,7 @@ def make_pdf():
     #============Page 1============#
     Body_Pagraph = "I am a member of the Westminster Secondary School robotics team, and we<br/>" \
     "are wondering if you would like to sponsor us!We are currently competing <br/>" \
-    "in the FIRST Robotics competitions of 2026, and in order to move forward with our robot " \
+    "in the FIRST Robotics competitions of 2027, and in order to move forward with our robot " \
     "building process, we are searching for supportive companies to help finance our team. "
 
     Body_Pagraph1 = "We currently need about $50,000 to fund our admission into the FIRST program ($9000), " \
