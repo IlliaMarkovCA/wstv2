@@ -13,18 +13,21 @@ def index():
     subject = ""
 
     if request.method == "POST":
-        company = request.form["company"]
-        name_type = request.form["name_type"]
-        name = request.form.get("name", "")
-        who = request.form.get("who", "")
-        title = request.form["title"]
+        company = request.form.get("company", "").strip()
+        name_type = request.form.get("name_type", "N")
+        first_name = (request.form.get("first_name") or request.form.get("name") or "").strip()
+        last_name = (request.form.get("last_name") or request.form.get("name") or "").strip()
+        who = request.form.get("who", "").strip()
+        title = request.form.get("title", "")
 
         if name_type == "N":
-            header = f"Hello {name},"
+            header = f"Hello {first_name or 'there'}," if first_name else "Hello there,"
         elif name_type == "L":
-            header = f"Dear {who}.{name},"
+            header = f"Dear {who}.{last_name}," if who and last_name else f"Dear {last_name or 'there'},"
         elif name_type == "C":
-            header = f"Hello {company},"
+            header = f"Hello {company or 'there'}," if company else "Hello there,"
+        else:
+            header = "Hello there,"
 
         email_text = f"""{header}
 
@@ -48,23 +51,32 @@ Teacher Mentor Contact: J. Levy, email J.Levy@TVDSB.ca
 @app.route("/pdf", methods=["POST"])
 def make_pdf():
     company = request.form.get("company", "").strip()
-    name_type = request.form.get("name_type", "")
-    name = request.form.get("name", "").strip()
+    name_type = request.form.get("name_type", "N")
+    first_name = (request.form.get("first_name") or request.form.get("name") or "").strip()
+    last_name = (request.form.get("last_name") or request.form.get("name") or "").strip()
     who = request.form.get("who", "").strip()
     users_name = request.form.get("users_name", "").strip()
 
+    PDFheader1 = "Hello there,"
+    PDFheader2 = "Dear Sir or Madam,"
+
     if name_type == "N":
-        PDFheader1 = f"Hello {name},"
-        PDFheader2 = f"Dear {name},"
+        contact_name = first_name or last_name or "there"
+        PDFheader1 = f"Hello {contact_name},"
+        PDFheader2 = f"Dear {contact_name},"
     elif name_type == "L":
-        PDFheader1 = f"Dear {who}.{name},"
-        if who == "Mr":
+        contact_name = last_name or first_name or "there"
+        PDFheader1 = f"Dear {who}.{contact_name}," if who and contact_name != "there" else f"Dear {contact_name},"
+        if who.lower() in {"mr", "mister"}:
             PDFheader2 = "Dear Sir,"
-        elif who == "Ms":
+        elif who.lower() in {"ms", "mrs", "miss", "madam"}:
             PDFheader2 = "Dear Madam,"
+        else:
+            PDFheader2 = "Dear Sir or Madam,"
     elif name_type == "C":
-        PDFheader1 = f"Hello {company},"
-        PDFheader2 = f"Dear {company},"
+        contact_name = company or "there"
+        PDFheader1 = f"Hello {contact_name},"
+        PDFheader2 = f"Dear {contact_name},"
     else:
         PDFheader1 = f"Hello {company or 'there'},"
         PDFheader2 = f"Dear {company or 'Sir or Madam'},"

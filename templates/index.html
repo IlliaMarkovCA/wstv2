@@ -88,11 +88,11 @@ textarea {
     <input id="users_name" name="users_name" placeholder="Your Name" required>
 
     <div id="date_block">
-        <input id="date" name="date" placeholder="Date YYYY/MM/DD">
+        <input id="date" name="date_name" placeholder="Date YYYY/MM/DD">
     </div>
 
     <div id="nameFields">
-        <input id="name" name="name" placeholder="Name">
+        <input id="name" name="name" placeholder="Contacts First Name">
         <input id="who" name="who" placeholder="Mr / Ms">
     </div>
 
@@ -142,22 +142,29 @@ textarea {
 </form>
 
 <script>
+window.addEventListener("DOMContentLoaded", toggleNameFields);
+
 function toggleNameFields() {
     const type = document.getElementById("nameType").value;
     const fields = document.getElementById("nameFields");
+    const nameInput = document.getElementById("name");
     const email = document.getElementById("email").value;
-    
-    if (type === "C")
-        document.getElementById("nameFields").style.display = "none";
-    else if(type === "L")
-        document.getElementById("nameFields").style.display = "inline-block";
-    else if(type === "N")
-        document.getElementById("nameFields").style.display = "inline-block"
 
-    if (email == "F1")
-        document.getElementById("date_block").style.display = "none";
-    else
+    if (type === "C") {
+        fields.style.display = "none";
+    } else if (type === "L") {
+        fields.style.display = "inline-block";
+        nameInput.placeholder = "Contact's Last Name";
+    } else if (type === "N") {
+        fields.style.display = "inline-block";
+        nameInput.placeholder = "Contact's First Name";
+    }
+
+    if (email === "F1") {
         document.getElementById("date_block").style.display = "block";
+    } else {
+        document.getElementById("date_block").style.display = "none";
+    }
 }
 
 function clearAll() {
@@ -166,9 +173,13 @@ function clearAll() {
     document.getElementById("name").value = "";
     document.getElementById("who").value = "";
     document.getElementById("emailAddress").value = "";
+    document.getElementById("date").value = "";
 
     // reset selects
+    document.getElementById("nameType").selectedIndex = 0;
+    document.getElementById("email").selectedIndex = 0;
     document.getElementById("title").selectedIndex = 0;
+    toggleNameFields();
 
     // clear preview
     document.getElementById("previewEmailAddress").value = "";
@@ -185,6 +196,7 @@ function generateEmail() {
     const title = document.getElementById("title").value;
     const emailAddr = document.getElementById("emailAddress").value;
     const users_name = document.getElementById("users_name").value;
+    const date = document.getElementById("date").value;
 
     let header = "";
     if (type === "N") header = `Hello ${name},`;
@@ -193,45 +205,45 @@ function generateEmail() {
 
     const body_introductory = `${header}
 
-        I hope this message finds you well. I'm ${users_name}, a high school student and proud member of Westminster WILDBOTS #6725, and I'm reaching out with great enthusiasm. We're passionate about STEM, robotics, and business, and we believe your support can help us achieve and learn incredible things. The WILDBOTS are a group of students from Westminster S.S. in London, Ontario who thrive on the excitement of the First Robotics Competition (FRC), where we design, build, and compete with robots in a fast-paced, dynamic environment. Through the years we’ve inspired students to pursue their passions in STEM and business and gain valuable experience throughout the build and competition seasons.
+I hope this message finds you well. I'm ${users_name}, a high school student and proud member of Westminster WILDBOTS #6725, and I'm reaching out with great enthusiasm. We're passionate about STEM, robotics, and business, and we believe your support can help us achieve and learn incredible things. The WILDBOTS are a group of students from Westminster S.S. in London, Ontario who thrive on the excitement of the First Robotics Competition (FRC), where we design, build, and compete with robots in a fast-paced, dynamic environment. Through the years we’ve inspired students to pursue their passions in STEM and business and gain valuable experience throughout the build and competition seasons.
 
-        We're excited about the potential of a partnership with you. Your sponsorship could empower us to inspire and educate the innovators of tomorrow, making a real impact on our community. Our team would love to have the opportunity to connect and discuss more about our team and sponsorship opportunities. I have attached more information about our team, a letter from our teacher mentors, and information about sponsorship or other opportunities.
+We're excited about the potential of a partnership with you. Your sponsorship could empower us to inspire and educate the innovators of tomorrow, making a real impact on our community. Our team would love to have the opportunity to connect and discuss more about our team and sponsorship opportunities. I have attached more information about our team, a letter from our teacher mentors, and information about sponsorship or other opportunities.
 
-        Thank you for considering our request, and I look forward to the opportunity to connect and share more about our team with you.
+Thank you for considering our request, and I look forward to the opportunity to connect and share more about our team with you.
 
-        Best regards,
+Best regards,
 
-        ${users_name}
+${users_name}
 
-        Teacher Mentor Contact: J. Levy, email J.Levy@TVDSB.ca`;
+Teacher Mentor Contact: J. Levy, email J.Levy@TVDSB.ca`;
 
-    const body_follow1 = `${header},
+    const body_follow1 = `${header}
 
-        I hope you're enjoying a pleasant day. I wanted to follow up on our initial outreach request on [DATE INITIAL EMAIL WAS SENT] and express our continued interest in the possibility of partnering with ${company} for the WILDBOTS’ exciting journey in STEM and business education and robotics.
+I hope you're enjoying a pleasant day. I wanted to follow up on our initial outreach request on ${date} and express our continued interest in the possibility of partnering with ${company} for the WILDBOTS’ exciting journey in STEM and business education and robotics.
         
-        Your support can help empower us to explore STEM and business and support a community of leaders and innovators. We understand your time is valuable, and we appreciate your consideration. If you have any questions or would like to discuss this with one of our teacher’s further, please feel free to reach out at your convenience. We'd be thrilled to explore this partnership together.
+Your support can help empower us to explore STEM and business and support a community of leaders and innovators. We understand your time is valuable, and we appreciate your consideration. If you have any questions or would like to discuss this with one of our teacher’s further, please feel free to reach out at your convenience. We'd be thrilled to explore this partnership together.
         
-        Thank you once again for considering our request, and we look forward to the opportunity to connect and discuss how we can work together to make a difference in the world of STEM.
+Thank you once again for considering our request, and we look forward to the opportunity to connect and discuss how we can work together to make a difference in the world of STEM.
         
-        Warm regards,
+Warm regards,
         
-        ${users_name}
+${users_name}
         
-        Teacher Mentor Contact: J. Levy, email  J.Levy@TVDSB.ca`;
+Teacher Mentor Contact: J. Levy, email  J.Levy@TVDSB.ca`;
  
-    const body_follow2 = `${header},
+    const body_follow2 = `${header}
 
-        I hope this message finds you well. We truly appreciate the time and consideration you've given to our previous emails, and we understand that you may have a busy schedule. This is our final follow-up regarding the potential sponsorship for the WILDBOTS this season.
-        
-        As passionate students dedicated to STEM education and robotics, we believe that a partnership with you could truly elevate our capabilities and continue our mission to inspire the next generation of innovators. Your involvement can shape the futures of countless young minds eager to embrace the world of science, technology, engineering, and mathematics. We would be honored to have you as our partner in this journey. If you have any questions or if you're ready to discuss the details, please do not hesitate to reach out. We genuinely hope this won't be our last conversation and that we can explore the possibilities of working together to make a difference.
-        
-        Thank you for considering our request, and we hope to hear from you soon. If not, we extend our heartfelt gratitude for your attention and support thus far.
-        
-        Warm regards,
-        
-        ${users_name}
+I hope this message finds you well. We truly appreciate the time and consideration you've given to our previous emails, and we understand that you may have a busy schedule. This is our final follow-up regarding the potential sponsorship for the WILDBOTS this season.
 
-        Teacher Mentor Contact: J. Levy, email  J.Levy@TVDSB.ca`;
+As passionate students dedicated to STEM education and robotics, we believe that a partnership with you could truly elevate our capabilities and continue our mission to inspire the next generation of innovators. Your involvement can shape the futures of countless young minds eager to embrace the world of science, technology, engineering, and mathematics. We would be honored to have you as our partner in this journey. If you have any questions or if you're ready to discuss the details, please do not hesitate to reach out. We genuinely hope this won't be our last conversation and that we can explore the possibilities of working together to make a difference.
+
+Thank you for considering our request, and we hope to hear from you soon. If not, we extend our heartfelt gratitude for your attention and support thus far.
+
+Warm regards,
+
+${users_name}
+
+Teacher Mentor Contact: J. Levy, email  J.Levy@TVDSB.ca`;
 
     let body = body_introductory;
     if (emailType === "F1") body = body_follow1;
