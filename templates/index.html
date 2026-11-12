@@ -105,7 +105,9 @@ textarea {
         Generate Email
     </button>
 
-
+    <button type="button" class="button-size" onclick="createEmailLink()">
+        Open in Email
+    </button>
 
     <!-- Submits to Flask -->
     <button formaction="/pdf" formmethod="post" class="button-size">
@@ -185,6 +187,20 @@ function clearAll() {
     document.getElementById("previewEmailAddress").value = "";
     document.getElementById("previewSubject").value = "";
     document.getElementById("previewEmail").value = "";
+}
+
+function createEmailLink() {
+    const email = document.getElementById("previewEmailAddress").value || document.getElementById("emailAddress").value;
+    const subject = document.getElementById("previewSubject").value || document.getElementById("title").value;
+    const body = document.getElementById("previewEmail").value || "";
+
+    if (!email) {
+        alert("Please enter an email address before opening the email.");
+        return;
+    }
+
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(gmailUrl, "_blank");
 }
 
 function generateEmail() {
