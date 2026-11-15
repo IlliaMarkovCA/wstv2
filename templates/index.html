@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WILDBOTS Tool</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial;
     padding: 40px;
@@ -16,11 +21,12 @@ body {
 }
 
 .form-box {
-    width: 320px;
+    flex: 0 0 344px;
 }
 
 .preview-box {
     flex: 1;
+    min-width: 0;
     margin-top: 6px;
 }
 
@@ -30,25 +36,50 @@ input, select, button {
     width: 100%;
 }
 
+textarea {
+    width: 100%;
+    resize: vertical;
+}
+
 button {
     font-size: 18px;
     cursor: pointer;
 }
 
-textarea {
-    width: 100%;
-    resize: vertical;
+#nameFields input {
+    display: block;
 }
 
 .hidden {
     display: none;
 }
 .wide-select {
-  width: 344px;   /* make it wider */
+  width: 100%;
 }
 
 .button-size{
-  width: 344px;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 20px 24px;
+    }
+
+    .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-box {
+        flex: auto;
+        width: 100%;
+    }
+
+    .preview-box {
+        width: 100%;
+        margin-top: 0;
+    }
 }
 </style>
 </head>
@@ -155,10 +186,10 @@ function toggleNameFields() {
     if (type === "C") {
         fields.style.display = "none";
     } else if (type === "L") {
-        fields.style.display = "inline-block";
+        fields.style.display = "block";
         nameInput.placeholder = "Contact's Last Name";
     } else if (type === "N") {
-        fields.style.display = "inline-block";
+        fields.style.display = "block";
         nameInput.placeholder = "Contact's First Name";
     }
 
