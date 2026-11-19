@@ -169,6 +169,15 @@ button {
               name="email"
               rows="15"
               placeholder="Email Body"></textarea>
+<textarea id="massageAi"
+    name="textAi"
+    rows="1"
+    placeholder="Ask me anything! Nya~!"></textarea>
+
+<button type="button" id="send-ai-btn" class="button-size">
+    SEND
+</button>
+    <p id="response">{{ ai_reply or "" }}</p>
 </div>
 
 </div>
@@ -176,6 +185,28 @@ button {
 
 <script>
 window.addEventListener("DOMContentLoaded", toggleNameFields);
+
+document.getElementById("send-ai-btn").addEventListener("click", async function() {
+    const textBox = document.getElementById("massageAi");
+    const responseBox = document.getElementById("response");
+
+    // 1. Package just the AI textarea value as form data
+    const formData = new FormData();
+    formData.append("textAi", textBox.value);
+
+    // Optional: show a loading message while waiting
+    responseBox.innerText = "Thinking...";
+
+    // 2. Send to your /ai Flask route in the background
+    const res = await fetch("/ai", {
+        method: "POST",
+        body: formData
+    });
+
+    // 3. Display the JSON reply without touching any other inputs
+    const data = await res.json();
+    responseBox.innerText = data.ai_reply;
+});
 
 function toggleNameFields() {
     const type = document.getElementById("nameType").value;
