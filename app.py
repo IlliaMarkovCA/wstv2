@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import LETTER
 import io
 import os
 from tables import sponsorship_table
+from openai import OpenAI
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
@@ -29,16 +31,6 @@ def index():
         else:
             header = "Hello there,"
 
-        email_text = f"""{header}
-
-I hope this message finds you well. I'm Illia Markov...
-(keep your email text here)
-
-Best regards,
-Illia Markov
-Teacher Mentor Contact: J. Levy, email J.Levy@TVDSB.ca
-"""
-
         subject = title
 
     return render_template(
@@ -60,6 +52,8 @@ def make_pdf():
     PDFheader1 = "Hello there,"
     PDFheader2 = "Dear Sir or Madam,"
 
+    
+    
     if name_type == "N":
         contact_name = first_name or last_name or "there"
         PDFheader1 = f"Hello {contact_name},"
@@ -245,13 +239,40 @@ def make_pdf():
     onLaterPages=background
     )
     buffer.seek(0)
-
+    
+    
     return send_file(
         buffer,
         as_attachment=True,
         download_name=f"PDF Sponsorship, {company}.pdf",
         mimetype="application/pdf"
     )
+    
+@app.route("/ai", methods=["POST"])
+def ai():
+    textAI = request.form.get("textAi", "").strip()
+
+    # Load from environment variable instead of hardcoding your key
+    client = OpenAI() 
+
+    response = client.chat.completions.create(
+        model="gpt-6-luna", 
+        messages=[
+            {
+                "role": "system", 
+                "content": "You are a cutesy femboy by the name of Millia Arkov and you are so epicsauce and are so amaszing and always wants to help out the user. also uses emoticons instead of emojis"
+            },
+            {
+                "role": "user", 
+                "content": textAI
+            }
+        ]
+    )
+    
+    ai_reply = response.choices[0].message.content
+    
+    # Send just the text back instead of reloading the whole page
+    return jsonify({"ai_reply": ai_reply})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
